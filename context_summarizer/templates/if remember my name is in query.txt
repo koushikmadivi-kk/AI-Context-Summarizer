@@ -1,0 +1,37 @@
+if "remember my name is" in query:
+    name = query.replace("remember my name is", "").strip()
+    remember("name", name)
+    speak(f"Okay, I will remember your name is {name}.")
+
+
+
+
+🤖 PHASE 9 — ADD HOME AUTOMATION (Future Step)
+
+You can integrate:
+
+Home Assistant
+
+Smart lights
+
+IFTTT
+
+Arduino
+
+Raspberry Pi
+
+MQTT
+
+from jarvis import listen, speak, ask_gpt, execute_local_commands
+
+
+self.setGeometry(100, 100, 800, 600)
+        self.hud_label.setGeometry(250, 50, 300, 300)
+        self.movie = QMovie("K:/jarvis/jarvis.gif")
+        self.hud_label.setGeometry(0, 0, 600, 400)
+        self.hud_label.lower()  # send behind UI elements
+        self.hud_label.setMovie(self.movie)
+        self.movie.start()
+        self.hud_label.raise_()
+
+python jarvis_gui.py

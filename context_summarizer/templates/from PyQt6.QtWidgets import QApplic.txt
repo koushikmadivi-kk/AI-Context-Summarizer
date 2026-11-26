@@ -1,0 +1,76 @@
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QPushButton
+from PyQt6.QtGui import QFont
+import sys
+
+class JarvisGUI(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Jarvis AI")
+        self.setGeometry(100, 100, 600, 400)
+        self.setStyleSheet("background-color: #0f0f0f; color: #00ffcc;")
+
+        layout = QVBoxLayout()
+
+        # Console area
+        self.console = QTextEdit()
+        self.console.setReadOnly(True)
+        self.console.setFont(QFont("Consolas", 12))
+        layout.addWidget(self.console)
+
+        # Speak button
+        self.listen_button = QPushButton("🎙 Speak")
+        self.listen_button.setFont(QFont("Consolas", 14))
+        self.listen_button.setStyleSheet("""
+            background-color: #1c1c1c;
+            color: #00ffcc;
+            border-radius: 10px;
+            padding: 10px;
+        """)
+        self.listen_button.clicked.connect(self.listen_command)
+        layout.addWidget(self.listen_button)
+
+        self.setLayout(layout)
+
+    def listen_command(self):
+        self.console.append("Listening...")
+    
+    # Step 1: get voice input
+    command = listen()
+    
+    if command:
+        self.console.append(f"User: {command}")
+
+        # Step 2: handle local commands or home automation
+        if execute_local_commands(command):
+            self.console.append("Executed local command.")
+            return
+
+        # Step 3: handle memory (optional)
+        if "remember my name is" in command:
+            name = command.replace("remember my name is", "").strip()
+            remember("name", name)
+            self.console.append(f"Jarvis: Okay, I will remember your name is {name}.")
+            speak(f"Okay, I will remember your name is {name}.")
+            return
+
+        if "what is my name" in command:
+            name = recall("name")
+            if name:
+                self.console.append(f"Jarvis: Your name is {name}.")
+                speak(f"Your name is {name}.")
+            else:
+                self.console.append("Jarvis: I don't know your name yet.")
+                speak("I don't know your name yet.")
+            return
+
+        # Step 4: fallback to GPT
+        response = ask_gpt(command)
+        self.console.append(f"Jarvis: {response}")
+        speak(response)
+        
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = JarvisGUI()
+    window.show()
+    sys.exit(app.exec())

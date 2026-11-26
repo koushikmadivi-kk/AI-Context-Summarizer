@@ -1,0 +1,22 @@
+ # --- WI-FI CONTROL ---
+    if "wifi" in cmd or "wi-fi" in cmd:
+        if "turn on" in cmd or "enable" in cmd:
+            speak("Turning on Wi-Fi, sir.")
+            # Requires Administrator privileges
+            os.system('netsh interface set interface "Wi-Fi" enabled')
+        elif "turn off" in cmd or "disable" in cmd:
+            speak("Turning off Wi-Fi, sir.")
+            os.system('netsh interface set interface "Wi-Fi" disabled')
+        return True
+    # --- BLUETOOTH CONTROL ---
+    if "bluetooth" in cmd:
+        if "turn on" in cmd or "enable" in cmd:
+            speak("Enabling Bluetooth, sir.")
+            # This starts the Bluetooth support service
+            os.system('powershell Start-Service bthserv')
+            # To fully toggle the radio, you'd usually need a third-party tool like 'btmgmt' 
+            # but starting the service often wakes the adapter.
+        elif "turn off" in cmd or "disable" in cmd:
+            speak("Disabling Bluetooth, sir.")
+            os.system('powershell Stop-Service bthserv')
+        return True
